@@ -1,5 +1,5 @@
 @charset "UTF-8";
-
+/* font-size rem / height, margin em => em을 사용하는 이유는 폰트사이즈의 비율로 설정하기 위함이다.*/
 html {
   font-size: 14px;
 }
@@ -30,12 +30,14 @@ a {
 
 /*--------------------------------------------------
   # nav
- --------------------------------------------------- */
+--------------------------------------------------- */
 .global-nav {
   height: 44px;
+  padding: 0 1rem;
 }
 .local-nav {
   height: 52px;
+  padding: 0 1rem;
   border-bottom: 1px solid #ddd;
 }
 
@@ -56,4 +58,122 @@ a {
 /* class가 product-name인 a태그를 제외한 나머지만 margin-left */
 .local-nav-links a:not(.product-name) {
   margin-left: 2em;
+}
+
+/*--------------------------------------------------
+  # scroll-section
+--------------------------------------------------- */
+/* 공통 */
+.scroll-section {
+  padding-top: 50vh;
+  border: 1px solid rgb(255, 242, 226);
+}
+
+#scroll-section-0 h1 {
+  font-size: 4rem;
+  text-align: center;
+}
+
+.main-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  height: 3em;
+  font-size: 2.5rem;
+}
+.main-message p {
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.2;
+}
+.main-message small {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+}
+#scroll-section-2 .main-message {
+  font-size: 3.5rem;
+}
+
+.description {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  color: #888;
+}
+.description strong {
+  float: left;
+  margin-right: 0.2em;
+  font-size: 3rem;
+  color: rgb(29, 29, 31);
+}
+.desc-message {
+  width: 50%;
+  font-weight: 900;
+}
+.pin {
+  width: 1px;
+  height: 100px;
+  background: rgb(29, 29, 31);
+}
+
+.mid-message {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: #888;
+}
+.mid-message strong {
+  color: rgb(29, 29, 31);
+}
+.canvas-caption {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font: 1.2rem;
+  color: #888;
+}
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 7rem;
+  color: #fff;
+  background-color: darkorange;
+}
+/*===================================================
+  # pc 1024px
+=================================================== */
+@media (min-width: 1024px) {
+  #scroll-section-0 h1 {
+    /* window size의 9% 크기로 */
+    font-size: 9vw;
+  }
+  .main-message {
+    font-size: 4vw;
+  }
+  .description {
+    font-size: 2rem;
+  }
+  .description strong {
+    font-size: 6rem;
+  }
+  #scroll-section-2 .main-message {
+    font-size: 6vw;
+  }
+  .main-message small {
+    font-size: 1.5vw;
+  }
+  .desc-message {
+    width: 20%;
+  }
+  .mid-message {
+    font-size: 4vw;
+  }
+  .canvas-caption {
+    font-size: 2rem;
+  }
 }
