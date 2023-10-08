@@ -136,6 +136,25 @@ a {
   font: 1.2rem;
   color: #888;
 }
+
+/* 위치 고정 요소 */
+.sticky-elem {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* body에 붙는 id */
+#show-scene-0 #scroll-section-0 .sticky-elem,
+#show-scene-1 #scroll-section-1 .sticky-elem,
+#show-scene-2 #scroll-section-2 .sticky-elem,
+#show-scene-3 #scroll-section-3 .sticky-elem {
+  display: block;
+}
+
+/* footer */
 .footer {
   display: flex;
   align-items: center;
