@@ -71,7 +71,11 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
   function setLayout() {
     // 각 스크롤 섹션의 높이 세팅
     for (let i = 0; i < sceneInfo.length; i++) {
-      sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
+      if (sceneInfo[i].type === 'sticky') {
+        sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
+      } else if (sceneInfo[i].type === 'normal') {
+        sceneInfo[i].scrollHeight = sceneInfo[i].objs.container.offsetHeight;
+      }
       sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`;
     }
 
