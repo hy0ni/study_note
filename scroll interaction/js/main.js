@@ -144,6 +144,10 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
       }
     }
     document.body.setAttribute('id', `show-scene-${currentScene}`);
+
+    //원래 캔버스의 높이인 1080과 window.innerHeight값을 비교
+    const heightRatio = window.innerHeight / 1080; // 캔버스 height 1080대비 윈도우창 높이의 비율 구하기
+    sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
   }
 
   function calcValues(values, currentYOffset) { // sceneInfo[i].values, 현재 씬에서 얼마나 스크롤 됐는지

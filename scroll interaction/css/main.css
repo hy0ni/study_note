@@ -80,7 +80,6 @@ a {
 /* 공통 */
 .scroll-section {
   padding-top: 50vh;
-  border: 3px solid rgb(255, 181, 90);
 }
 
 #scroll-section-0 h1 {
@@ -190,7 +189,14 @@ a {
 
 .sticky-elem-canvas {
   top: 0;
-  background: #fff7c6;
+  height: 100%;
+}
+
+/* height를 100%로 맞추고 canvas를 가운데 정렬 js로 scale, translate3d속성 사용 */
+.sticky-elem-canvas canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 /* footer */
