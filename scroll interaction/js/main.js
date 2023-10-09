@@ -13,6 +13,7 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
   let yOffset = 0; // window.pageYOffset 대신 사용할 변수
   let prevScrollHeight = 0; // 현재 스크롤 위치(yOffset)보다 이전에 위치한 스크롤 섹션들의 스크롤 높이값의 합
   let currentScene = 0; // 현재 활성화된(눈 앞에 보고있는) 씬(scroll-section)
+  let enterNewScene = false; // 새로운 scene이 시작된 순간 true
 
   // 각 구간에 대한 정보
   const sceneInfo = [
@@ -96,12 +97,14 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
     const values = sceneInfo[currentScene].values;
     const currentYOffset = yOffset - prevScrollHeight;
 
+    console.log(currentScene);
     // console.log(currentScene, currentYOffset); // 현재 씬이 몇번째 씬이고 몇픽셀 스크롤 됐는지
     switch (currentScene) {
       case 0:
         // console.log('0 play');
         let messageA_opacity_in = calcValues(values.messageA_opacity, currentYOffset);
         objs.messageA.style.opacity = messageA_opacity_in;
+        console.log(messageA_opacity_in);
         break;
       case 1:
         // console.log('1 play');
@@ -117,23 +120,25 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
 
   // 몇 번째 스크롤 섹션이 스크롤 중인지 판별하는 함수
   function scrollLoop() {
+    enterNewScene = false; //스크롤을 할때 마다 기본으로 false
     prevScrollHeight = 0; // scrollHegith의 값이 누적되지 않도록 초기화
     for (let i = 0; i < currentScene; i++) {
       prevScrollHeight += sceneInfo[i].scrollHeight;
     }
     // console.log(prevScrollHeight);
-    if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
-      // 현재 위치가 이전 섹션들의 높이값 + 현재 보고있는 씬 높이값 보다 크다면
+    if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {// 현재 위치가 이전 섹션들의 높이값 + 현재 보고있는 씬 높이값 보다 크다면
+      enterNewScene = true; // 씬이 바뀌는 순간에 true
       currentScene++;
       document.body.setAttribute('id', `show-scene-${currentScene}`); // 바뀔때만 id를 넣어줌
     }
-    if (yOffset < prevScrollHeight) {
-      // 현재 위치가 이전 섹션들의 높이값 보다 작다면
+    if (yOffset < prevScrollHeight) {// 현재 위치가 이전 섹션들의 높이값 보다 작다면
+      enterNewScene = true; // 씬이 바뀌는 순간에 true
       if (currentScene === 0) return; // 브라우저 바운스 효과로 인해 마이너스가 되는 것을 방지(모바일)
       currentScene--;
       document.body.setAttribute('id', `show-scene-${currentScene}`); // 바뀔때만 id를 넣어줌
     }
 
+    if (enterNewScene) return; // enterNewScene이 true면 씬이 바뀌는 순간일 때 함수를 종료(계산 오차 해결하기 위함)
     playAnimation();
   }
 
