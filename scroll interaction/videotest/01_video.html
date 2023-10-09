@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>스크롤 비디오 제어하기</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			height: 500vh;
+		}
+
+		.sample-video {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 비디오로 직접 처리할 경우 해상도가 높아질수록 버벅거림 -->
+	<video class="sample-video" src="../video/sample-low.mp4" muted></video>
+	<!-- <video class="sample-video" src="../video/sample-high.mp4" muted></video> -->
+
+	<script>
+		const videoElem = document.querySelector('.sample-video');
+
+		videoElem.addEventListener('loadeddata', function () {
+			console.log('비디오 로드 완료');
+			init();
+		});
+
+		let progress;
+		let currentFrame;
+		function init() {
+			window.addEventListener('scroll', function () {
+				progress = pageYOffset / (document.body.offsetHeight - window.innerHeight);
+				console.log(progress);
+				if (progress < 0) progress = 0;
+				if (progress > 1) progress = 1;
+
+				videoElem.currentTime = videoElem.duration * progress; // 전체 비디오 재생시간 * 스크롤 된 비율
+			});
+		}
+
+	</script>
+</body>
+
+</html>
