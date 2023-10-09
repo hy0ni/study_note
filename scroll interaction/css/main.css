@@ -40,6 +40,7 @@ a {
   width: 100%;
   height: 44px;
   padding: 0 1rem;
+  z-index: 10;
 }
 
 .local-nav {
@@ -49,6 +50,7 @@ a {
   width: 100%;
   height: 52px;
   padding: 0 1rem;
+  z-index: 11;
   border-bottom: 1px solid #ddd;
 }
 
@@ -184,6 +186,11 @@ a {
 #show-scene-2 #scroll-section-2 .sticky-elem,
 #show-scene-3 #scroll-section-3 .sticky-elem {
   display: block;
+}
+
+.sticky-elem-canvas {
+  top: 0;
+  background: #fff7c6;
 }
 
 /* footer */
