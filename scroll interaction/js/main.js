@@ -184,6 +184,10 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
     switch (currentScene) {
       case 0:
         // console.log('0 play');
+        let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
+        objs.context.drawImage(objs.videoImages[sequence], 0, 0); //drawImage(그릴 이미지,x,y,w,h)
+        // console.log(sequence);
+
         if (scrollRatio <= 0.22) {
           //in
           objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
