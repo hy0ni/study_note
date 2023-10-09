@@ -30,8 +30,12 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
         messageD: document.querySelector("#scroll-section-0 .main-message.d"),
       },
       values: {
-        messageA_opacity: [0, 1, { start: 0.1, end: 0.2 }], // 시작값, 끝값, {애니메이션이 재생되는 구간} 10%~20%구간
-        messageB_opacity: [0, 1, { start: 0.3, end: 0.4 }], // 30%~40%구간
+        messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }], // 시작값, 끝값, {애니메이션이 재생되는 구간} 10%~20%구간
+        // messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }], // 30%~40%구간
+        messageA_translateY_in: [20, 0, { start: 0.1, end: 0.2 }],
+
+        messageA_opacity_out: [1, 0, { start: 0.25, end: 0.3 }], // 25%구간부터 사라지기 시작 ~ 30%구간 완전히 사라짐
+        messageA_translateY_out: [0, -20, { start: 0.25, end: 0.3 }],
       }
     },
     {
@@ -112,16 +116,29 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
   function playAnimation() {
     const objs = sceneInfo[currentScene].objs;
     const values = sceneInfo[currentScene].values;
-    const currentYOffset = yOffset - prevScrollHeight;
+    const currentYOffset = yOffset - prevScrollHeight; // 현재씬에서 얼만큼 스크롤 했는지 비율 
+    const scrollHeight = sceneInfo[currentScene].scrollHeight; //현재 씬의 scrollHeight;
+    const scrollRatio = currentYOffset / scrollHeight; // 현재씬에서 얼만큼 스크롤 했는지 비율 / 현재 씬의 scrollHeight;
 
     // console.log(currentScene);
     // console.log(currentScene, currentYOffset); // 현재 씬이 몇번째 씬이고 몇픽셀 스크롤 됐는지
     switch (currentScene) {
       case 0:
         // console.log('0 play');
-        let messageA_opacity_in = calcValues(values.messageA_opacity, currentYOffset);
-        objs.messageA.style.opacity = messageA_opacity_in;
-        console.log(messageA_opacity_in);
+        const messageA_opacity_in = calcValues(values.messageA_opacity_in, currentYOffset);
+        const messageA_opacity_out = calcValues(values.messageA_opacity_out, currentYOffset);
+        const messageA_translateY_in = calcValues(values.messageA_translateY_in, currentYOffset);
+        const messageA_translateY_out = calcValues(values.messageA_translateY_out, currentYOffset);
+        if (scrollRatio <= 0.22) {
+          //in
+          objs.messageA.style.opacity = messageA_opacity_in;
+          objs.messageA.style.transform = `translateY(${messageA_translateY_in}%)`;
+        } else {
+          //out
+          objs.messageA.style.opacity = messageA_opacity_out;
+          objs.messageA.style.transform = `translateY(${messageA_translateY_out}%)`;
+        }
+        // console.log(messageA_opacity_in);
         break;
       case 1:
         // console.log('1 play');
