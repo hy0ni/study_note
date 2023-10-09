@@ -81,10 +81,14 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
     document.body.setAttribute('id', `show-scene-${currentScene}`);
   }
 
-  // css값을 계산하는 함수
-  // 현재 섹션(scroll-section)에서 얼만큼 스크롤이 됬는지 비율로 구하기
   function calcValues(values, currentYOffset) { // sceneInfo[i].values, 현재 씬에서 얼마나 스크롤 됐는지
+    let rv; // return해줄 values
+    // 현재 씬(스크롤섹션)에서 스크롤된 범위를 비율로 구하기
+    let scrollRatio = currentYOffset / sceneInfo[currentScene].scrollHeight; //얼만큼 스크롤 됐는지 / 현재 씬의 스크롤 높이
 
+    rv = scrollRatio * (values[1] - values[0]) + values[0]; // 전체 범위 + 초기값
+
+    return rv;
   }
 
   function playAnimation() {
@@ -96,9 +100,8 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
     switch (currentScene) {
       case 0:
         // console.log('0 play');
-        let messageA_opacity_0 = values.messageA_opacity[0];
-        let messageA_opacity_1 = values.messageA_opacity[1];
-
+        let messageA_opacity_in = calcValues(values.messageA_opacity, currentYOffset);
+        objs.messageA.style.opacity = messageA_opacity_in;
         break;
       case 1:
         // console.log('1 play');
