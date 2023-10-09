@@ -35,6 +35,7 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
       values: {
         videoImageCount: 300, //image갯수
         imageSequence: [0, 299], // image 순서
+        canvas_opacity: [1, 0, { start: 0.9, end: 1 }],
         messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }], // 시작값, 끝값, {애니메이션이 재생되는 구간} 10%~20%구간
         messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }], // 30%~40%구간
         messageC_opacity_in: [0, 1, { start: 0.5, end: 0.6 }], // 50%~60%구간
@@ -190,6 +191,7 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
         // console.log('0 play');
         let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
         objs.context.drawImage(objs.videoImages[sequence], 0, 0); //drawImage(그릴 이미지,x,y,w,h)
+        objs.canvas.style.opacity = calcValues(values.canvas_opacity, currentYOffset);
         // console.log(sequence);
 
         if (scrollRatio <= 0.22) {
@@ -318,7 +320,11 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
   DOMContentLoaded: HTML DOM요소들이 로드 된 후 실행(이미지 등은 로드가 되지 않아도 실행 됨)
   */
   // window.addEventListener('DOMContentLoaded', setLayout);
-  window.addEventListener('load', setLayout);
+  window.addEventListener('load', () => {
+    setLayout();
+    // 첫번째 이미지 그려줌
+    sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+  });
   window.addEventListener('resize', setLayout); // 브라우저 창 사이즈 변경될 때 scrollHeight값 재 설정
 
 })();
