@@ -30,7 +30,8 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
         messageD: document.querySelector("#scroll-section-0 .main-message.d"),
       },
       values: {
-        messageA_opacity: [0, 1], // 시작값, 끝값
+        messageA_opacity: [0, 1, { start: 0.1, end: 0.2 }], // 시작값, 끝값, {애니메이션이 재생되는 구간} 10%~20%구간
+        messageB_opacity: [0, 1, { start: 0.3, end: 0.4 }], // 30%~40%구간
       }
     },
     {
@@ -85,9 +86,25 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
   function calcValues(values, currentYOffset) { // sceneInfo[i].values, 현재 씬에서 얼마나 스크롤 됐는지
     let rv; // return해줄 values
     // 현재 씬(스크롤섹션)에서 스크롤된 범위를 비율로 구하기
-    let scrollRatio = currentYOffset / sceneInfo[currentScene].scrollHeight; //얼만큼 스크롤 됐는지 / 현재 씬의 스크롤 높이
+    const scrollHeight = sceneInfo[currentScene].scrollHeight;
+    const scrollRatio = currentYOffset / scrollHeight; //얼만큼 스크롤 됐는지 / 현재 씬의 스크롤 높이
 
-    rv = scrollRatio * (values[1] - values[0]) + values[0]; // 전체 범위 + 초기값
+    if (values.length === 3) {
+      // start ~ end 사이에 애니메이션 실행
+      const partScrollStart = values[2].start * scrollHeight;
+      const partScrollEnd = values[2].end * scrollHeight;
+      const partScrollHeight = partScrollEnd - partScrollStart;
+
+      if (currentYOffset >= partScrollStart && currentYOffset <= partScrollEnd) {
+        rv = (currentYOffset - partScrollStart) / partScrollHeight * (values[1] - values[0]) + values[0];
+      } else if (currentYOffset < partScrollStart) {
+        rv = values[0];
+      } else if (currentYOffset > partScrollEnd) {
+        rv = values[1];
+      }
+    } else {
+      rv = scrollRatio * (values[1] - values[0]) + values[0]; // 전체 범위 + 초기값
+    }
 
     return rv;
   }
@@ -97,7 +114,7 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
     const values = sceneInfo[currentScene].values;
     const currentYOffset = yOffset - prevScrollHeight;
 
-    console.log(currentScene);
+    // console.log(currentScene);
     // console.log(currentScene, currentYOffset); // 현재 씬이 몇번째 씬이고 몇픽셀 스크롤 됐는지
     switch (currentScene) {
       case 0:
