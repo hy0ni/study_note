@@ -74,9 +74,16 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
         messageB: document.querySelector('#scroll-section-2 .b'),
         messageC: document.querySelector('#scroll-section-2 .c'),
         pinB: document.querySelector('#scroll-section-2 .b .pin'),
-        pinC: document.querySelector('#scroll-section-2 .c .pin')
+        pinC: document.querySelector('#scroll-section-2 .c .pin'),
+        canvas: document.querySelector("#video-canvas-2"),
+        context: document.querySelector("#video-canvas-2").getContext('2d'),
+        videoImages: [],
       },
       values: {
+        videoImageCount: 960, //image갯수
+        imageSequence: [0, 959], // image 순서
+        canvas_opacity_in: [0, 1, { start: 0, end: 0.1 }],
+        canvas_opacity_out: [1, 0, { start: 0.85, end: 0.9 }],
         messageA_opacity_in: [0, 1, { start: 0.15, end: 0.2 }],
         messageB_opacity_in: [0, 1, { start: 0.5, end: 0.55 }],
         messageC_opacity_in: [0, 1, { start: 0.72, end: 0.77 }],
@@ -119,6 +126,13 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
       imgElem.src = `./video/001/IMG_${6726 + i}.JPG`;
       sceneInfo[0].objs.videoImages.push(imgElem);
     }
+
+    let imgElem2;
+    for (let i = 0; i < sceneInfo[2].values.videoImageCount; i++) {
+      imgElem2 = new Image();
+      imgElem2.src = `./video/002/IMG_${7027 + i}.JPG`;
+      sceneInfo[2].objs.videoImages.push(imgElem2);
+    }
     // console.log(sceneInfo[0].objs.videoImages);
   }
   setCanvasImages();
@@ -149,6 +163,7 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
     //원래 캔버스의 높이인 1080과 window.innerHeight값을 비교
     const heightRatio = window.innerHeight / 1080; // 캔버스 height 1080대비 윈도우창 높이의 비율 구하기
     sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
+    sceneInfo[2].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
   }
 
   function calcValues(values, currentYOffset) { // sceneInfo[i].values, 현재 씬에서 얼마나 스크롤 됐는지
@@ -242,6 +257,17 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
 
       case 2:
         // console.log('2 play');
+        let sequence2 = Math.round(calcValues(values.imageSequence, currentYOffset));
+        objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
+
+        if (scrollRatio <= 0.5) {
+          // in
+          objs.canvas.style.opacity = calcValues(values.canvas_opacity_in, currentYOffset);
+        } else {
+          // out
+          objs.canvas.style.opacity = calcValues(values.canvas_opacity_out, currentYOffset);
+        }
+
         if (scrollRatio <= 0.25) {
           // in
           objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
