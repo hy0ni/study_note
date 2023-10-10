@@ -124,6 +124,7 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
       values: {
         rect1X: [0, 0, { start: 0, end: 0 }],
         rect2X: [0, 0, { start: 0, end: 0 }],
+        rectStartY: 0 //박스의 애니메이션이 시작되는 y위치
       }
     },
   ];
@@ -339,12 +340,25 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
         }
 
         objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+        objs.context.fillStyle = 'white';
         objs.context.drawImage(objs.images[0], 0, 0);
 
         // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
-        const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
+        const recalculatedInnerWidth = document.body.offsetWidth / canvasScaleRatio;
         const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
         // console.log(recalculatedInnerWidth, recalculatedInnerHeight);
+
+        if (!values.rectStartY) {
+          // .getBoundingClientRect() 화면상에 있는 오브젝트의 크기와 위치를 가져올 수 있는 메서드
+          // values.rectStartY = objs.canvas.getBoundingClientRect().top;
+          values.rectStartY = objs.canvas.offsetTop + (objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2;
+          // console.log(values.rectStartY);
+          values.rect1X[2].start = (window.innerHeight / 2) / scrollHeight;
+          values.rect2X[2].start = (window.innerHeight / 2) / scrollHeight;
+          values.rect1X[2].end = values.rectStartY / scrollHeight;
+          values.rect2X[2].end = values.rectStartY / scrollHeight;
+          // console.log(values.rectStartY);
+        }
 
         const whiteRectWidth = recalculatedInnerWidth * 0.15;
         // 왼쪽 배치는 -
@@ -355,8 +369,22 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
         values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
 
         // 좌우 흰색 박스 그리기
-        objs.context.fillRect(values.rect1X[0], 0, parseInt(whiteRectWidth), objs.canvas.height); //캔버스에서 정수처리를 해주면 그릴때 성능이 좀 더 좋아진다.
-        objs.context.fillRect(values.rect2X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
+        // objs.context.fillRect(values.rect1X[0], 0, parseInt(whiteRectWidth), objs.canvas.height); //캔버스에서 정수처리를 해주면 그릴때 성능이 좀 더 좋아진다.
+        // objs.context.fillRect(values.rect2X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
+        objs.context.fillRect(
+          parseInt(calcValues(values.rect1X, currentYOffset)),
+          0,
+          parseInt(whiteRectWidth),
+          objs.canvas.height
+        );
+        objs.context.fillRect(
+          parseInt(calcValues(values.rect2X, currentYOffset)),
+          0,
+          parseInt(whiteRectWidth),
+          objs.canvas.height
+        );
+
+
         break;
 
     }
@@ -366,6 +394,7 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
   function scrollLoop() {
     enterNewScene = false; //스크롤을 할때 마다 기본으로 false
     prevScrollHeight = 0; // scrollHegith의 값이 누적되지 않도록 초기화
+
     for (let i = 0; i < currentScene; i++) {
       prevScrollHeight += sceneInfo[i].scrollHeight;
     }
@@ -385,6 +414,7 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
     }
 
     if (enterNewScene) return; // enterNewScene이 true면 씬이 바뀌는 순간일 때 함수를 종료(계산 오차 해결하기 위함)
+
     playAnimation();
   }
 

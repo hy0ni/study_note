@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-/* font-size rem / height, margin em => em을 사용하는 이유는 폰트사이즈의 비율로 설정하기 위함이다.*/
 html {
   font-size: 14px;
 }
@@ -9,7 +8,7 @@ body {
   overflow-x: hidden;
   color: rgb(29, 29, 31);
   letter-spacing: -0.05em;
-  background-color: #fff;
+  background: white;
 }
 
 p {
@@ -20,7 +19,29 @@ a {
   color: rgb(29, 29, 31);
 }
 
-/* 공통 */
+
+
+.global-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 44px;
+  padding: 0 1rem;
+}
+
+.local-nav {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  z-index: 11;
+  width: 100%;
+  height: 52px;
+  padding: 0 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
 .global-nav-links,
 .local-nav-links {
   display: flex;
@@ -28,30 +49,6 @@ a {
   max-width: 1000px;
   height: 100%;
   margin: 0 auto;
-}
-
-/*--------------------------------------------------
-  # nav
---------------------------------------------------- */
-.global-nav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 44px;
-  padding: 0 1rem;
-  z-index: 10;
-}
-
-.local-nav {
-  position: absolute;
-  top: 45px;
-  left: 0;
-  width: 100%;
-  height: 52px;
-  padding: 0 1rem;
-  z-index: 11;
-  border-bottom: 1px solid #ddd;
 }
 
 .global-nav-links {
@@ -62,14 +59,13 @@ a {
 .local-nav-links .product-name {
   margin-right: auto;
   font-size: 1.4rem;
-  font-weight: 900;
+  font-weight: bold;
 }
 
 .local-nav-links a {
   font-size: 0.8rem;
 }
 
-/* class가 product-name인 a태그를 제외한 나머지만 margin-left */
 .local-nav-links a:not(.product-name) {
   margin-left: 2em;
 }
@@ -77,17 +73,17 @@ a {
 /*--------------------------------------------------
   # scroll-section
 --------------------------------------------------- */
-/* 공통 */
 .scroll-section {
+  position: relative;
   padding-top: 50vh;
 }
 
 #scroll-section-0 h1 {
   position: relative;
   top: -10vh;
+  z-index: 5;
   font-size: 4rem;
   text-align: center;
-  z-index: 5;
 }
 
 .main-message {
@@ -95,14 +91,14 @@ a {
   align-items: center;
   justify-content: center;
   top: 35vh;
-  margin-top: 5px;
+  margin: 5px 0;
   height: 3em;
   font-size: 2.5rem;
   opacity: 0;
 }
 
 .main-message p {
-  font-weight: 900;
+  font-weight: bold;
   text-align: center;
   line-height: 1.2;
 }
@@ -110,7 +106,7 @@ a {
 .main-message small {
   display: block;
   margin-bottom: 0.5em;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 #scroll-section-2 .main-message {
@@ -132,9 +128,9 @@ a {
   color: rgb(29, 29, 31);
 }
 
-.desc-message {
-  width: 50%;
-  font-weight: 900;
+.sticky-elem.desc-message {
+  width: 45%;
+  font-weight: bold;
   opacity: 0;
 }
 
@@ -168,17 +164,25 @@ a {
 
 .canvas-caption {
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 0 auto 0;
   padding: 0 1rem;
-  font: 1.2rem;
+  font-size: 1.2rem;
   color: #888;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 7rem;
+  color: white;
+  background: darkorange;
 }
 
 /* 위치 고정 요소 */
 .sticky-elem {
   display: none;
   position: fixed;
-  /* top: 0; */
   left: 0;
   width: 100%;
 }
@@ -196,37 +200,22 @@ a {
   height: 100%;
 }
 
-/* height를 100%로 맞추고 canvas를 가운데 정렬 js로 scale, translate3d속성 사용 */
 .sticky-elem-canvas canvas {
   position: absolute;
   top: 50%;
   left: 50%;
 }
 
-.image-blend-canvas {
-  /* background: #888; */
-}
-
 #scroll-section-3 {
   display: flex;
-  /* 세로 정렬 */
   flex-direction: column;
+  /* 세로 정렬 */
   align-items: center;
 }
 
-/* footer */
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 7rem;
-  color: #fff;
-  background-color: darkorange;
-}
-
-/*===================================================
-  # pc 1024px
-=================================================== */
+/* -----------------------------
+ # 1024px
+------------------------------ */
 @media (min-width: 1024px) {
   #scroll-section-0 h1 {
     /* window size의 9% 크기로 */
@@ -238,6 +227,7 @@ a {
   }
 
   .description {
+    padding: 0;
     font-size: 2rem;
   }
 
@@ -253,7 +243,7 @@ a {
     font-size: 1.5vw;
   }
 
-  .desc-message {
+  .sticky-elem.desc-message {
     width: 20%;
   }
 
@@ -267,10 +257,14 @@ a {
   }
 
   .mid-message {
+    /* width: 1000px;
+    padding: 0; */
     font-size: 4vw;
   }
 
   .canvas-caption {
+    /* margin-top: -8rem;
+    padding: 0; */
     font-size: 2rem;
   }
 }
