@@ -112,6 +112,14 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
       objs: {
         container: document.querySelector("#scroll-section-3"),
         canvasCaption: document.querySelector('.canvas-caption'),
+        canvas: document.querySelector('.image-blend-canvas'),
+        context: document.querySelector('.image-blend-canvas').getContext('2d'),
+        imagesPath: [
+          // './img/blend_img01.jpg',
+          './img/blend_img01.jpg',
+          './img/blend_img02.jpg',
+        ],
+        images: [],
       },
       values: {
 
@@ -133,6 +141,14 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
       imgElem2.src = `./video/002/IMG_${7027 + i}.JPG`;
       sceneInfo[2].objs.videoImages.push(imgElem2);
     }
+
+    let imgElem3;
+    for (let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++) {
+      imgElem3 = new Image();
+      imgElem3.src = sceneInfo[3].objs.imagesPath[i];
+      sceneInfo[3].objs.images.push(imgElem3);
+    }
+    console.log(sceneInfo[3].objs.images)
     // console.log(sceneInfo[0].objs.videoImages);
   }
   setCanvasImages();
@@ -308,6 +324,22 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
         break;
       case 3:
         // console.log('3 play');
+        //가로/세로 모두 꽉 차게 하기 위해 여기서 세팅(계산 필요)
+        const widthRatio = window.innerWidth / objs.canvas.width;
+        const heightRatio = window.innerHeight / objs.canvas.height;
+        let canvasScaleRatio;
+
+        if (widthRatio <= heightRatio) {
+          // 캔버스보다 브라우저 창이 홀쭉한 경우
+          canvasScaleRatio = heightRatio;
+        } else {
+          // 캔버스보다 브라우저 창이 납작한 경우
+          canvasScaleRatio = widthRatio;
+        }
+
+        objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+        objs.context.drawImage(objs.images[0], 0, 0);
+
         break;
     }
   }
@@ -320,11 +352,13 @@ window.pageYOffset 문서가 현재 수직축을 따라 스크롤되는 픽셀 �
       prevScrollHeight += sceneInfo[i].scrollHeight;
     }
     // console.log(prevScrollHeight);
-    if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {// 현재 위치가 이전 섹션들의 높이값 + 현재 보고있는 씬 높이값 보다 크다면
+    if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+      // 현재 위치가 이전 섹션들의 높이값 + 현재 보고있는 씬 높이값 보다 크다면
       enterNewScene = true; // 씬이 바뀌는 순간에 true
       currentScene++;
       document.body.setAttribute('id', `show-scene-${currentScene}`); // 바뀔때만 id를 넣어줌
     }
+
     if (yOffset < prevScrollHeight) {// 현재 위치가 이전 섹션들의 높이값 보다 작다면
       enterNewScene = true; // 씬이 바뀌는 순간에 true
       if (currentScene === 0) return; // 브라우저 바운스 효과로 인해 마이너스가 되는 것을 방지(모바일)
