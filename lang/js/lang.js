@@ -48,11 +48,11 @@ function langEvent(lng, selector, beforeLng) {
 const setCookie = function (name, value, day) {
   let date = new Date();
   date.setTime(date.getTime() + day * 60 * 60 * 24 * 1000); //1 day
-  document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+  document.cookie = `${name} = ${value}; expires = ${date.toUTCString()}; path=/`;
 }
 // 페이지 로드시 쿠키유무 여부를 판단하여 케이스에 따라 세팅
 const getCookie = function (name) {
-  let value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  let value = `document.cookie.match('(^|;) ?${name}=([^;]*)(;|$)')`;
   return value ? value[2] : null;
 };
 
@@ -79,7 +79,7 @@ const updateContent = function (obj, lng) {
   // body에 ko or en이라면? ko나 en만 붙여주고 : 그외의 언어라면 en을 같이 붙여줌
   lng === 'ko' || lng === 'en'
     ? $('body').attr("class", lng)
-    : $('body').attr("class", lng + ' en');
+    : $('body').attr("class", lng + 'en');
 }
 
 /* getDataKey : data-lang값을 object key값으로 사용 */
@@ -104,7 +104,7 @@ const getDataKey = function (obj, key) {
 /* getJson : import JSON. */
 const getJson = function (lng, beforeLng) {
   $.ajax({
-    url: "./locales/" + lng + '.json',
+    url: `./js/locales/${lng}.json`,
     dataType: "json",
     async: false,
     success: function (data) {
