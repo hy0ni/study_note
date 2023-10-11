@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다국어 json 구현</title>
+  <link rel="stylesheet" href="../resource/css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <main class="wrap">
+
+    <nav class="menu">
+      <h1>다국어 구현</h1>
+      <!-- lang tab -->
+      <div class="gnb-lang">
+        <button class="selected" data-change="ko">한국어</button>
+        <div class="lang-list">
+          <button class="item is-active" data-change="ko">한국어</button>
+          <button class="item" data-change="en">ENG</button>
+          <!-- 일본어 -->
+          <button class="item" data-change="ja">日本語</button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="contents">
+      <h2 class="title" data-lang="title">타이틀</h2>
+      <p data-lang="lang">한국어</p>
+      <p data-lang="description.0">가나다라마바사</p>
+      <p data-lang="description.1">아자차카타파하</p>
+    </section>
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/lang.js"></script>
+</body>
+
+</html>

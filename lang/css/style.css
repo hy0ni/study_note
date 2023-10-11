@@ -1,0 +1,72 @@
+ .menu {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 800px;
+   margin: 10vh auto;
+ }
+
+ h1 {
+   margin-right: auto;
+   font-size: 26px;
+   font-weight: 800;
+   color: #777;
+ }
+
+ .gnb-lang {
+   position: relative;
+   width: 120px;
+   height: 40px;
+ }
+
+ .gnb-lang .selected {
+   width: 120px;
+   min-width: 100px;
+   padding: 6px;
+   font-size: 18px;
+   font-weight: 700;
+   line-height: 140%;
+   letter-spacing: 0;
+   color: #333;
+ }
+
+ .gnb-lang .selected:after {
+   display: inline-block;
+   margin-left: 6px;
+   width: 16px;
+   height: 10px;
+   background: url("./img/ic_lang.svg") no-repeat 0 0/cover;
+   content: "";
+ }
+
+ .gnb-lang .lang-list {
+   position: absolute;
+   top: 40px;
+   left: 0;
+   width: 120px;
+   min-width: 100px;
+   padding: 6px;
+   border: 1px solid #E6E6E6;
+ }
+
+ .lang-list .item {
+   display: block;
+   width: 100%;
+   padding: 6px;
+   color: #333;
+   text-align: inherit;
+ }
+
+ .lang-list .item:hover,
+ .lang-list .item.is-active {
+   transition: all .2s ease;
+   opacity: 0.4;
+ }
+
+ .contents {
+   width: 800px;
+   margin: 0 auto;
+   color: rgb(88, 88, 88);
+   font-size: 18px;
+   font-weight: 500;
+ }
